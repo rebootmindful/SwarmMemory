@@ -2,16 +2,25 @@
 /**
  * Memory Profile System - 统一解析 + 分层存储 + 学习能力
  */
+const os = require('os');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const MEMORY_FILE = '/home/user/.openclaw/skills/memory-profile/MEMORY.json';
+const MEMORY_DIR = path.join(os.homedir(), '.openclaw', 'skills', 'memory-profile');
+const MEMORY_FILE = path.join(MEMORY_DIR, 'MEMORY.json');
 
 class MemorySystem {
     constructor() {
         this.data = null;
+        this.ensureDir();
         this.load();
+    }
+    
+    ensureDir() {
+        if (!fs.existsSync(MEMORY_DIR)) {
+            fs.mkdirSync(MEMORY_DIR, { recursive: true });
+        }
     }
     
     load() {
